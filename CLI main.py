@@ -8,24 +8,8 @@ def request_move(move, player):
     'x-rapidapi-key': "3efad19192msh6a98b6713edaf48p177302jsn3793168952fd"
     }
 
-    response = requests.request("GET", url, headers=headers, )
+    response = requests.request("GET", url, headers=headers)
     return response.json()
-
-def win_check(board, player):
-    winner = []
-    if board.check_h(player):
-        winner = ['HORIZONTAL', player]
-        return winner
-    if board.check_v(player):
-        winner = ['VERTICAL', player]
-        return winner
-    if board.check_diag_r(player):
-        winner = ['RIGHT DIAGONAL', player]
-        return winner
-    if board.check_diag_l(player):
-        winner = ['LEFT DIAGONAL', player]
-        return winner
-    return False
 
 def main():
 
@@ -53,7 +37,7 @@ def main():
             print()
             board.player(p_move)
             board.show()
-            win = win_check(board, PLAYER)
+            win = board.check(board, PLAYER)
             if win:
                 print("     C O N G R A T U L A T I O N S  !!!")
                 print("--------------------------------------------")
@@ -72,7 +56,8 @@ def main():
             board.update_board(X['recommendation'], api_player)
             print(f"Strenght of opponents move is [{X['strength']}]")
             board.show()
-            lost = win_check(board, player=api_player)
+
+            lost = board.check(board, api_player)
             if lost:
                 print("   W H A T  A  S H A M E  !!!")
                 print("--------------------------------")
@@ -91,6 +76,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-

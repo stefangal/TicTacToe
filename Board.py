@@ -17,28 +17,24 @@ class Board():
             self.board.insert(pos-1, self.ox)
         return self.board
 
-    def check_h(self, player):
-        """Check HORIZONTALLY whether win row is available"""
-        first  = all((player == x for x in self.board[0:3])) #1,2,3
-        second = all((player == x for x in self.board[3:6])) #4,5,6
-        third = all((player == x for x in self.board[6:9]))  #7,8,9
-        return any([first, second, third])
+    def check(self, bd, player):
+        bd = self.board
+        first_h  = all((player == x for x in bd[0:3])) #1,2,3
+        second_h = all((player == x for x in bd[3:6])) #4,5,6
+        third_h = all((player == x for x in bd[6:9]))  #7,8,9
+        first_v  = all((player == x for x in bd[0:7:3])) #1,4,7
+        second_v = all((player == x for x in bd[1:8:3])) #2,5,8
+        third_v = all((player == x for x in bd[2:9:3]))  #3,6,9
 
-    def check_v(self, player):
-        """Check VERTICALLY whether win row is available"""
-        first  = all((player == x for x in self.board[0:7:3])) #1,4,7
-        second = all((player == x for x in self.board[1:8:3])) #2,5,8
-        third = all((player == x for x in self.board[2:9:3]))  #3,6,9
-        return any([first, second, third])
-
-
-    def check_diag_r(self, player):
-        """Check whether in RIGHT DIAGONAL win row is available"""
-        return all((player == self.board[x] for x in [0, 4, 8])) # 1, 5, 9
-
-    def check_diag_l(self,player):
-        """Check whether in LEFT DIAGONAL win row is available"""
-        return all((player == self.board[x] for x in [2, 4, 6])) # 3, 5, 7
+        if any([first_h, second_h, third_h]):
+            return ['HORIZONTAL', player]
+        elif any([first_v, second_v, third_v]):
+            return ['VERTICAL', player]
+        elif all((player == self.board[x] for x in [0, 4, 8])): # 1, 5, 9
+            return ['RIGHT DIAGONAL', player]
+        elif all((player == self.board[x] for x in [2, 4, 6])): # 3, 5, 7
+            return ['LEFT DIAGONAL', player]
+        return False
 
     def show(self):
         """CLI 3x3 visual output"""

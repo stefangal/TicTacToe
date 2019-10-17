@@ -1,9 +1,10 @@
 class Board():
-
-    board = list(("-") for x in range(9))
-
     def __init__(self, ox):
         self.ox = ox.upper()
+
+    board = list(("-") for x in range(9))
+    moves_made = []
+
 
     def update_board(self, pos, ox):
         self.board.pop(pos)
@@ -12,7 +13,7 @@ class Board():
 
     def player(self, pos):
         """Returns a new board in list format after players move"""
-        if self.board[pos-1] == "-":
+        if pos not in self.moves_made:
             x = self.board.pop(pos-1)
             self.board.insert(pos-1, self.ox)
         return self.board
@@ -49,6 +50,14 @@ class Board():
     def answer_to_move(self, move, player):
         return self.board.insert(move, player)
 
+    @classmethod
+    def made_moves(cls, pos):
+        cls.moves_made.append(pos)
+
     def __str__(self):
         """API format output of state"""
         return "".join(self.board)
+
+    def restart(self):
+        self.moves_made = []
+        self.board = list(("-") for x in range(9))

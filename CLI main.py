@@ -12,32 +12,39 @@ def request_move(move, player):
     return response.json()
 
 def main():
-
-    PLAYER =""
+    local_player =""
     print("W E L C O M E  T O  T H E  G A M E")
     print("==================================")
     print("            TIC TAC TOE           ")
     print(" by Stefan                  2019  ")
     print()
 
-    while PLAYER not in ['x', 'X','o','O']:
-        PLAYER = input('Chooose X or O : ').upper()
-    if PLAYER == "X":
+    while local_player not in ['x', 'X','o','O']:
+        local_player = input('Chooose X or O : ').upper()
+    if local_player == "X":
         api_player = "O"
     else:
         api_player = "X"
-    board = Board(PLAYER)
+    board = Board(local_player)
 
     print()
     print("This is the playing board:")
     board.show()
+    board.restart()
     while True:
         p_move = int(input('Chooose position [1-9]: '))
+        while p_move in board.moves_made:
+            print("\nAlready used! Choose different!")
+            print(f"Your options {[x for x in range(1,10) if x not in board.moves_made]}\n")
+            p_move = int(input('Chooose position [1-9]: '))
+
         if str(p_move) in '123456789':
             print()
             board.player(p_move)
+            board.made_moves(p_move)
+            print(f"Moves made: {board.moves_made}")
             board.show()
-            win = board.check(board, PLAYER)
+            win = board.check(board, local_player)
             if win:
                 print("     C O N G R A T U L A T I O N S  !!!")
                 print("--------------------------------------------")
@@ -45,15 +52,17 @@ def main():
                 print()
                 print('          G A M E  O V E R  !!!        ')
                 break
+
             elif '-' not in board.board:
                 print("        N O  W I N N E R  ! ! !     ")
-                print("----------------------------------------")
-                print()
-                print('     G A M E  O V E R  !!!        ')
+                print("---------------------------------------\n")
+                print("        G A M E  O V E R  ! ! !     ")
                 break
 
-            X = request_move(board, PLAYER)
+            X = request_move(board, local_player)
             board.update_board(X['recommendation'], api_player)
+            board.made_moves(X['recommendation']+1)
+            print(f"Moves made: {board.moves_made}")
             print(f"Strenght of opponents move is [{X['strength']}]")
             board.show()
 
@@ -61,18 +70,21 @@ def main():
             if lost:
                 print("   W H A T  A  S H A M E  !!!")
                 print("--------------------------------")
-                print('You lost against the API.')
-                print(f'API won with {lost[0]} LINE.')
-                print()
+                print('   You lost against the API.')
+                print(f'Your opponent won with {lost[0]} LINE.\n')
                 print('     G A M E  O V E R  !!!        ')
                 break
             elif '-' not in board.board:
                 print("        N O  W I N N E R  ! ! !     ")
-                print("----------------------------------------")
-                print()
-                print('     G A M E  O V E R  !!!        ')
+                print("---------------------------------------\n")
+                print("        G A M E  O V E R  ! ! !     ")
                 break
 
 
 if __name__ == '__main__':
-    main()
+    play_gain = True
+    while play_gain:
+        main()
+        play_gain = input("\nPlay again? [Y, N] : ").upper()
+        if play_gain == 'N':
+            play_gain = False

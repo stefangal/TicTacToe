@@ -1,10 +1,10 @@
 class Board():
-    def __init__(self, ox):
-        self.ox = ox.upper()
 
     board = list(("-") for x in range(9))
     moves_made = []
 
+    def __init__(self, ox):
+        self.ox = ox.upper()
 
     def update_board(self, pos, ox):
         self.board.pop(pos)

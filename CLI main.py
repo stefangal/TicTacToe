@@ -80,7 +80,6 @@ def main():
                 print("        G A M E  O V E R  ! ! !     ")
                 break
 
-
 if __name__ == '__main__':
     play_gain = True
     while play_gain:

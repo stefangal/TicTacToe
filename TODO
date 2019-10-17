@@ -1,0 +1,12 @@
+
+Todo:
+  PLAYER:
+    - Select X o O - add 2 buttons to select on start of the game, then disable buttons
+    - Players turn:
+        [-] On click add X or O on cell:
+        [-] Selected position add to moves_made list in Boards.py
+        [-] Background check winner
+    - AI's turn:
+        + From imput add on cell pos 1-9 the X or O
+        + Check winner
+        + Add pos to moves_made

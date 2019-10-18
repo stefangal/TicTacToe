@@ -1,10 +1,8 @@
 class Board():
-
-    board = list(("-") for x in range(9))
-    moves_made = []
-
     def __init__(self, ox):
         self.ox = ox.upper()
+        self.board = list(("-") for x in range(9))
+        self.moves_made = []
 
     def update_board(self, pos, ox):
         self.board.pop(pos)
@@ -50,14 +48,9 @@ class Board():
     def answer_to_move(self, move, player):
         return self.board.insert(move, player)
 
-    @classmethod
-    def made_moves(cls, pos):
-        cls.moves_made.append(pos)
+    def made_moves(self, pos):
+        self.moves_made.append(pos)
 
     def __str__(self):
         """API format output of state"""
         return "".join(self.board)
-
-    def restart(self):
-        self.moves_made = []
-        self.board = list(("-") for x in range(9))

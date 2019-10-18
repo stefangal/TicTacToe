@@ -26,11 +26,9 @@ def main():
     else:
         api_player = "X"
     board = Board(local_player)
-
     print()
     print("This is the playing board:")
     board.show()
-    board.restart()
     while True:
         p_move = int(input('Chooose position [1-9]: '))
         while p_move in board.moves_made:
@@ -81,9 +79,9 @@ def main():
                 break
 
 if __name__ == '__main__':
-    play_gain = True
-    while play_gain:
+    play_again = True
+    while play_again:
         main()
-        play_gain = input("\nPlay again? [Y, N] : ").upper()
-        if play_gain == 'N':
-            play_gain = False
+        play_again = input("\nPlay again? [Y, N] : ").upper()
+        if play_again == 'N':
+            play_again = False
